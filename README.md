@@ -37,8 +37,6 @@ Output: answer + confidence
 
 ## Results
 
-Evaluated on ViQuAE validation set (50 sampled questions), using `gpt-4o-mini` as the underlying model for both the baseline and our framework — the only variable is whether retrieval is used.
-
 ### Metrics
 
 - **Exact Match (EM)** — the predicted answer must match the gold answer *exactly* (after lowercasing and removing articles). This is the strict metric: a correct but differently-phrased answer counts as wrong.
