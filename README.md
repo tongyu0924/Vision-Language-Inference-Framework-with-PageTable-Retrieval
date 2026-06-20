@@ -34,11 +34,3 @@ Step 5. Tiered Co-linearity Matching ★ contribution
 Step 6. Evidence-Only Answer Extraction
 
 Output: answer + confidence
-
-## Benchmark
-
-Evaluated on ViQuAE validation set against published baselines (DPR + Multi-passage BERT, BM25 + Multi-passage BERT, ArcFace).
-
-\`\`\`
-
-Set `API_KEY` in the script and configure `corpus_docs` / `n_eval` in `CFG` to control evaluation scale.
