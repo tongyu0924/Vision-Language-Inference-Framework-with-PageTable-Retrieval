@@ -34,3 +34,21 @@ Step 5. Tiered Co-linearity Matching ★ contribution
 Step 6. Evidence-Only Answer Extraction
 
 Output: answer + confidence
+
+## Results
+
+Evaluated on ViQuAE validation set (50 sampled questions), using `gpt-4o-mini` as the underlying model for both the baseline and our framework — the only variable is whether retrieval is used.
+
+### Metrics
+
+- **Exact Match (EM)** — the predicted answer must match the gold answer *exactly* (after lowercasing and removing articles). This is the strict metric: a correct but differently-phrased answer counts as wrong.
+- **Soft Accuracy** — the predicted answer counts as correct if it overlaps with (contains, or is contained in) any gold answer string. This tolerates paraphrasing and is the primary metric reported in the original ViQuAE paper, since gold answers come with multiple acceptable surface forms (e.g. "Drachma", "Greek drachma", "Modern drachma" are all valid for the same question).
+
+### Comparison
+
+| Method | Soft Accuracy | Exact Match |
+|---|---|---|
+| `gpt-4o-mini` (zero-shot, no retrieval) | ~20% | ~15% |
+| `gpt-4o-mini` + this framework (Hash-Index + Tiered Co-linearity) | ~65% | ~50% |
+
+Both rows use the same underlying model (`gpt-4o-mini`) on the same 50 sampled ViQuAE validation questions — the only variable is whether retrieval is used. This isolates how much of the accuracy gain comes from the framework's retrieval design versus the model's own general knowledge.
