@@ -4,7 +4,7 @@ A hash-indexed, agent-led retrieval framework for knowledge-based Visual Questio
 
 ## Overview
 
-Most multimodal RAG systems embed an image+question pair into a single vector and retrieve via cosine similarity. This is brittle: the same image asked about with different questions can be re-identified inconsistently, and a single ranked evidence list lets topically-similar-but-wrong documents outrank the correct one.
+Most multimodal RAG systems embed an image+question pair into a single vector and retrieve via semantic similarity matching. This is brittle: the same image asked about with different questions can be re-identified inconsistently, and a single ranked evidence list lets topically-similar-but-wrong documents outrank the correct one.
 
 This framework replaces vector search with an **LLM-summarized hash index** and a **tiered trust model** for evidence, instead of a flat ranked list.
 
