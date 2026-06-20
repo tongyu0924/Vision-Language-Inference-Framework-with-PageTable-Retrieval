@@ -49,6 +49,6 @@ Evaluated on ViQuAE validation set (50 sampled questions), using `gpt-4o-mini` a
 | Method | Soft Accuracy | Exact Match |
 |---|---|---|
 | `gpt-4o-mini` (zero-shot, no retrieval) | ~20% | ~15% |
-| `gpt-4o-mini` + this framework (Hash-Index + Tiered Co-linearity) | ~65% | ~50% |
+| `gpt-4o-mini` + this framework | ~65% | ~50% |
 
 Both rows use the same underlying model (`gpt-4o-mini`) on the same 50 sampled ViQuAE validation questions — the only variable is whether retrieval is used. This isolates how much of the accuracy gain comes from the framework's retrieval design versus the model's own general knowledge.
