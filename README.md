@@ -4,17 +4,19 @@ A hash-indexed, agent-led retrieval framework for knowledge-based Visual Questio
 
 ## Overview
 
-Most multimodal RAG systems embed an image+question pair into a single vector and retrieve via semantic similarity matching. This is brittle: the same image asked about with different questions can be re-identified inconsistently, and a single ranked evidence list lets topically-similar-but-wrong documents outrank the correct one.
+Most multimodal RAG systems embed an image+question pair into a single vector and retrieve evidence via semantic similarity matching. This is brittle: the same image asked about with different questions can be re-identified inconsistently, and a single ranked evidence list may let topically similar but incorrect documents outrank the correct one.
 
-This framework replaces vector search with an **LLM-summarized hash index** and a **tiered trust model** for evidence, instead of a flat ranked list.
+This framework replaces vector search with a **Structured ExtractionIndex** and **subject-prioritized evidence extraction**. Instead of storing each document as an embedding or a single LLM-generated hash key, each chunk is converted into structured fields such as `topics`, `entities`, `relations`, `evidence`, and `keywords`, then retrieved through inverted lookup tables.
 
 ## Contributions
 
 - **One-time, cached subject identification** — each image's subject is identified exactly once and reused across every question asked about it, eliminating identity drift between questions.
-- **Hash-Indexed PageTable Construction** — every corpus document is summarized once by an LLM into `(summary, keywords)`, forming a hash table instead of a vector index.
-- **Agent-Led Dynamic Pruning** — an LLM agent reads PageTable summaries in batches and reasons about relevance, replacing cosine-similarity retrieval.
-- **Tiered Co-linearity Matching** — evidence is partitioned into three explicit trust tiers (subject article / question-specific related entities / general search results) rather than pooled into one ranked list, so a guaranteed-correct document can never be outranked by a more "famous" but wrong one.
-- **Evidence-only answer extraction** — answers must be traceable to retrieved text; no reliance on the model's parametric memory.
+- **Structured ExtractionIndex Construction** — each corpus chunk is processed once by an LLM to extract structured fields such as `topics`, `entities`, `concepts`, `methods`, `claims`, `relations`, `evidence`, `questions_answered`, and `keywords`.
+- **Inverted Lookup Table Retrieval** — extracted fields are compiled into lookup tables such as `topic_index`, `entity_index`, `concept_index`, `relation_index`, `question_index`, and `keyword_index`, replacing vector similarity search with structured retrieval.
+- **Query-side Structured Extraction** — each user question is converted into structured fields such as `intent`, `entities`, `topics`, `relations`, and `keywords`, then matched against the ExtractionIndex.
+- **Score-and-Rerank Dynamic Pruning** — candidate chunks retrieved from the lookup tables are scored and reranked before answer generation, reducing irrelevant context.
+- **Subject-prioritized evidence extraction** — the subject article and entity-grounded documents are preserved during retrieval and prioritized during answer extraction, reducing the chance that topically similar but incorrect evidence dominates the final answer.
+- **Evidence-only answer extraction** — answers must be traceable to retrieved summaries, evidence snippets, or full content; no reliance on the model's parametric memory.
 
 ## Inference Framework
 
@@ -22,18 +24,32 @@ Step 1. One-time Subject Identification (cached per image)
 
 Step 2. Question Understanding (subject is fixed input)
 
-Step 3. Related-Entity Resolution
+Step 3. Query-side Structured Extraction
 
-Step 4. Hash-Index Agent-Led Pruning ★ contribution
+Extract:
+- `intent`
+- `entities`
+- `topics`
+- `relations`
+- `keywords`
 
-Step 5. Tiered Co-linearity Matching ★ contribution
-- Tier 0: subject's own article (highest trust)
-- Tier 1: question-specific related entities
-- Tier 2: general hash-index results (lowest trust)
+Step 4. Entity-grounded Augmentation
 
-Step 6. Evidence-Only Answer Extraction
+Step 5. Search Inverted Lookup Tables ★ contribution
 
-Output: answer + confidence
+Step 6. Candidate Chunk Retrieval
+
+Step 7. Score / Rerank Dynamic Pruning ★ contribution
+
+Step 8. Read Summary + Read Evidence
+
+Step 9. Need More Detail?
+- Yes: Read full content
+- No: Use extracted evidence
+
+Step 10. Subject-prioritized Evidence-Only Answer Extraction
+
+Output: answer
 
 ## Results
 
