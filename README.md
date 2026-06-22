@@ -21,22 +21,33 @@ This framework replaces vector search with a **Structured ExtractionIndex** and 
 ## Inference Framework
 
 Step 1. One-time Subject Identification (cached per image)
+
 Step 2. Question Understanding (subject is fixed input)
+
 Step 3. Query-side Structured Extraction
+
 Extract:
 - `intent`
 - `entities`
 - `topics`
 - `relations`
 - `keywords`
+
 Step 4. Entity-grounded Augmentation
-Step 5. Search Inverted Lookup Tables ★ contribution
+
+Step 5. Search Inverted Lookup Tables 
+
 Step 6. Candidate Chunk Retrieval
-Step 7. Answer-type Hard Filtering ★ contribution
+
+Step 7. Answer-type Hard Filtering 
+
 Step 8. Tiered Evidence Organization (Tier 0 / 1 / 2 by provenance)
+
 Step 9. Need More Detail?
+
 - Yes: Read full content
 - No: Use extracted evidence
+- 
 Step 10. Subject-prioritized Evidence-Only Answer Extraction
 Output: answer
 
