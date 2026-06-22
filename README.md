@@ -25,7 +25,6 @@ Step 1. One-time Subject Identification (cached per image)
 Step 2. Question Understanding (subject is fixed input)
 
 Step 3. Query-side Structured Extraction
-
 Extract:
 - `intent`
 - `entities`
@@ -44,10 +43,9 @@ Step 7. Answer-type Hard Filtering
 Step 8. Tiered Evidence Organization (Tier 0 / 1 / 2 by provenance)
 
 Step 9. Need More Detail?
-
 - Yes: Read full content
 - No: Use extracted evidence
-- 
+  
 Step 10. Subject-prioritized Evidence-Only Answer Extraction
 Output: answer
 
