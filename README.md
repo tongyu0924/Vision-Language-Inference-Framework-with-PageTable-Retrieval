@@ -14,41 +14,30 @@ This framework replaces vector search with a **Structured ExtractionIndex** and 
 - **Structured ExtractionIndex Construction** — each corpus chunk is processed once by an LLM to extract structured fields such as `topics`, `entities`, `concepts`, `methods`, `claims`, `relations`, `evidence`, `questions_answered`, and `keywords`.
 - **Inverted Lookup Table Retrieval** — extracted fields are compiled into lookup tables such as `topic_index`, `entity_index`, `concept_index`, `relation_index`, `question_index`, and `keyword_index`, replacing vector similarity search with structured retrieval.
 - **Query-side Structured Extraction** — each user question is converted into structured fields such as `intent`, `entities`, `topics`, `relations`, and `keywords`, then matched against the ExtractionIndex.
-- **Score-and-Rerank Dynamic Pruning** — candidate chunks retrieved from the lookup tables are scored and reranked before answer generation, reducing irrelevant context.
-- **Subject-prioritized evidence extraction** — the subject article and entity-grounded documents are preserved during retrieval and prioritized during answer extraction, reducing the chance that topically similar but incorrect evidence dominates the final answer.
+- **Answer-type hard filtering** — candidate chunks are pruned by a deterministic type-compatibility predicate (e.g., date queries require a four-digit year, person queries require a named entity), requiring no model calls and providing a traceable rejection reason for every discarded document.
+- **Subject-prioritized tiered evidence** — candidates are organized into three tiers by provenance: subject article first, entity-grounded documents second, and remaining PageTable candidates ordered by field-hit count, without numerical scoring.
 - **Evidence-only answer extraction** — answers must be traceable to retrieved summaries, evidence snippets, or full content; no reliance on the model's parametric memory.
 
 ## Inference Framework
 
 Step 1. One-time Subject Identification (cached per image)
-
 Step 2. Question Understanding (subject is fixed input)
-
 Step 3. Query-side Structured Extraction
-
 Extract:
 - `intent`
 - `entities`
 - `topics`
 - `relations`
 - `keywords`
-
 Step 4. Entity-grounded Augmentation
-
 Step 5. Search Inverted Lookup Tables ★ contribution
-
 Step 6. Candidate Chunk Retrieval
-
-Step 7. Score / Rerank Dynamic Pruning ★ contribution
-
-Step 8. Read Summary + Read Evidence
-
+Step 7. Answer-type Hard Filtering ★ contribution
+Step 8. Tiered Evidence Organization (Tier 0 / 1 / 2 by provenance)
 Step 9. Need More Detail?
 - Yes: Read full content
 - No: Use extracted evidence
-
 Step 10. Subject-prioritized Evidence-Only Answer Extraction
-
 Output: answer
 
 ## Results
