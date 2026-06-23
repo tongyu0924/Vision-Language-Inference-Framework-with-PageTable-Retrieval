@@ -8,6 +8,14 @@ Most multimodal RAG systems embed an image+question pair into a single vector an
 
 This framework replaces vector search with a **Structured ExtractionIndex** and **subject-prioritized evidence extraction**. Instead of storing each document as an embedding or a single LLM-generated hash key, each chunk is converted into structured fields such as `topics`, `entities`, `relations`, `evidence`, and `keywords`, then retrieved through inverted lookup tables.
 
+<p align="center">
+  <img src="pipeline.jpg" alt="Vision-Language Inference Framework with PageTable Retrieval Pipeline" width="900">
+</p>
+
+<p align="center">
+  <em>Figure 1. Overview of the Vision-Language Inference Framework with PageTable Retrieval.</em>
+</p>
+
 ## Contributions
 
 - **One-time, cached subject identification** — each image's subject is identified exactly once and reused across every question asked about it, eliminating identity drift between questions.
